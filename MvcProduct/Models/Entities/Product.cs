@@ -16,7 +16,7 @@ namespace MvcProduct.Models.Entities
         public string Description { get; set; }
         [Required, DataType(DataType.Text), StringLength(20)]
         public string Family { get; set; }
-        [Required, DataType(DataType.Text), StringLength(8, MinimumLength = 8)]
+        [Required, DataType(DataType.Text), StringLength(8)]
         public string Bin { get; set; }
         [Required, Display(Name = "Is Active")]
         public bool IsActive { get; set; }

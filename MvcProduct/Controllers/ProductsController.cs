@@ -51,20 +51,58 @@ namespace MvcProduct.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            var familyRepository = new FamilyGetRepository(configuration);
+            var binRepository = new BinGetRepository(configuration);
+            var families = familyRepository.GetAll();
+            var bines = binRepository.GetAll();
+            var queryFamilies = families.OrderBy(f => f.Name).Select(f => f.Name).Distinct();
+            var queryBines = bines.OrderBy(b => b.Name).Select(b => b.Name).Distinct();
+
+            var model = new NewProductModel
+            {
+                Bines = new SelectList(queryBines.ToList()),
+                Families = new SelectList(queryFamilies.ToList()),
+            };
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Id,Name,Description,Family,Bin,IsActive,ReleaseDate")] Product product)
+        public IActionResult Create([Bind("Product,Families,Bines")] NewProductModel newProduct)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                repository.Add(product);
+                //var product = new Product
+                //{
+                //    Id = newProduct.Id,
+                //    Name = newProduct.Name,
+                //    Description = newProduct.Description,
+                //    IsActive = newProduct.IsActive,
+                //    ReleaseDate = newProduct.ReleaseDate,
+                //    Bin = newProduct.ProductBin,
+                //    Family = newProduct.ProductFamily
+                //};
+                //repository.Add(product);
+                repository.Add(newProduct.Product);
                 return RedirectToAction(nameof(Index));
 
             }
+            return View(newProduct);
+        }
+
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var product = repository.GetById(id.Value);
+            if(product== null)
+            {
+                return NotFound();
+            }
             return View(product);
+
         }
     }
 }

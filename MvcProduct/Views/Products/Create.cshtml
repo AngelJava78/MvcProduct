@@ -1,4 +1,4 @@
-﻿@model MvcProduct.Models.Entities.Product
+﻿@model MvcProduct.Models.Entities.NewProductModel
 @{
     ViewData["Title"] = "Create";
 }
@@ -11,38 +11,47 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label asp-for="Product.Name" class="control-label"></label>
+                <input asp-for="Product.Name" class="form-control" />
+                <span asp-validation-for="Product.Name" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="Product.Description" class="control-label"></label>
+                <input asp-for="Product.Description" class="form-control" />
+                <span asp-validation-for="Product.Description" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="Family" class="control-label"></label>
-                <input asp-for="Family" class="form-control" />
-                <span asp-validation-for="Family" class="text-danger"></span>
+                <label asp-for="Product.Family" class="control-label"></label>
+                <select asp-for="Product.Family" asp-items="Model.Families" class="form-control">
+                    <option value="">Select one option</option>
+                </select>
+                <span asp-validation-for="Product.Family" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Bin" class="control-label"></label>
-                <input asp-for="Bin" class="form-control" />
-                <span asp-validation-for="Bin" class="text-danger"></span>
-            </div>
+            @*<select asp-for="ProductFamily" asp-items="Model.Families">
+                <option value="">All</option>
+            </select>*@
+
+        <div class="form-group">
+            <label asp-for="Product.Bin" class="control-label"></label>
+            @*<input asp-for="Product.Bin" class="form-control" />*@
+            <select asp-for="Product.Bin" asp-items="Model.Bines" class="form-control">
+                <option value="">Select one option</option>
+            </select>
+            <span asp-validation-for="Product.Bin" class="text-danger"></span>
+        </div>
 
             <div class="form-group">
-                <label asp-for="IsActive" class="control-label"></label>
-                <input asp-for="IsActive" class="form-control" />
-                <span asp-validation-for="IsActive" class="text-danger"></span>
+                <label asp-for="Product.IsActive" class="control-label"></label>
+                <input asp-for="Product.IsActive" class="form-control" />
+                <span asp-validation-for="Product.IsActive" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ReleaseDate" class="control-label"></label>
-                <input asp-for="ReleaseDate" class="form-control" />
-                <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+                <label asp-for="Product.ReleaseDate" class="control-label"></label>
+                <input asp-for="Product.ReleaseDate" class="form-control" />
+                <span asp-validation-for="Product.ReleaseDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

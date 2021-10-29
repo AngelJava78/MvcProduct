@@ -35,7 +35,7 @@ namespace MvcProduct.Models.Data
                     IsActive = item.IsActive, 
                     ReleaseDate = item.ReleaseDate 
                 };
-                connection.Execute(query, parameters, commandType: CommandType.StoredProcedure);
+                rows = connection.Execute(query, parameters, commandType: CommandType.StoredProcedure);
                 
             }
             return rows;
@@ -43,7 +43,17 @@ namespace MvcProduct.Models.Data
 
         public bool Delete(int id)
         {
-            throw new NotImplementedException();
+            var rows = 0;
+            var query = "[dbo].[usp_Products_Delete]";
+            using (var connection = new SqlConnection(connectionString))
+            {
+                var parameters = new
+                {
+                    Id = id
+                };
+                rows = connection.Execute(query, parameters, commandType: CommandType.StoredProcedure);
+            }
+            return rows > 0;
         }
 
         public List<Product> GetAll()
@@ -59,12 +69,34 @@ namespace MvcProduct.Models.Data
 
         public Product GetById(int id)
         {
-            throw new NotImplementedException();
+            Product result = null;
+            var query = "SELECT [Id], [Name], [Description], [Family], [Bin], [IsActive], [ReleaseDate] FROM [dbo].[Products] WHERE Id = @Id";
+            using (var connection = new SqlConnection(connectionString))
+            {
+                result = connection.Query<Product>(query, new { Id = id }, commandType: CommandType.Text).FirstOrDefault();
+            }
+            return result;
         }
 
         public bool Update(Product item)
         {
-            throw new NotImplementedException();
+            var rows = 0;
+            var query = "[dbo].[usp_Products_Update]";
+            using (var connection = new SqlConnection(connectionString))
+            {
+                var parameters = new
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    Description = item.Description,
+                    Family = item.Family,
+                    Bin = item.Bin,
+                    IsActive = item.IsActive,
+                    ReleaseDate = item.ReleaseDate
+                };
+                rows = connection.Execute(query, parameters, commandType: CommandType.StoredProcedure);
+            }
+            return rows > 0;
         }
     }
 }
